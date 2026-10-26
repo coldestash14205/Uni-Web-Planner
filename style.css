@@ -1,0 +1,437 @@
+/* ========== GLOBAL RESET & TYPOGRAPHY ========== */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+  background: #f4f7fc;
+  color: #1e293b;
+  padding: 16px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.app {
+  max-width: 1400px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+h1 {
+  font-size: 1.8rem;
+  font-weight: 600;
+  margin-bottom: 16px;
+  letter-spacing: -0.02em;
+  color: #0f172a;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+h1 span {
+  background: #3b82f6;
+  color: white;
+  font-size: 1rem;
+  padding: 4px 12px;
+  border-radius: 40px;
+  font-weight: 400;
+}
+
+h2 {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-bottom: 12px;
+  color: #1e293b;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* ========== STATUS BARS (3 COLUMNS) ========== */
+.status-bars {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 14px;
+  margin-bottom: 22px;
+  width: 100%;
+}
+
+/* Three columns side-by-side from tablet width up */
+@media (min-width: 700px) {
+  .status-bars {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+}
+
+.status-bar {
+  background: white;
+  border-radius: 20px;
+  padding: 14px 14px 12px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.04), 0 0 0 1px rgba(0, 0, 0, 0.02);
+  border-top: 5px solid #cbd5e1;
+  display: flex;
+  flex-direction: column;
+  min-height: 160px;
+  max-height: 260px;
+  overflow: hidden;
+}
+
+.status-bar[data-status="todo"] {
+  border-top-color: #3b82f6;
+  background: linear-gradient(to bottom, #f8fbff 0%, #ffffff 40px);
+}
+
+.status-bar[data-status="progress"] {
+  border-top-color: #f59e0b;
+  background: linear-gradient(to bottom, #fffcf5 0%, #ffffff 40px);
+}
+
+.status-bar[data-status="completed"] {
+  border-top-color: #10b981;
+  background: linear-gradient(to bottom, #f6fef9 0%, #ffffff 40px);
+}
+
+.status-bar.drag-over {
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.35);
+  transform: scale(1.01);
+  transition: all 0.15s;
+}
+
+.status-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #f1f5f9;
+  flex-shrink: 0;
+}
+
+.status-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  display: inline-block;
+  flex-shrink: 0;
+}
+
+.todo-dot { background: #3b82f6; box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15); }
+.progress-dot { background: #f59e0b; box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.15); }
+.completed-dot { background: #10b981; box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.15); }
+
+.status-title {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #1e293b;
+  flex: 1;
+  letter-spacing: 0.01em;
+}
+
+.status-count {
+  background: #f1f5f9;
+  color: #475569;
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 40px;
+  min-width: 26px;
+  text-align: center;
+}
+
+.status-bar[data-status="todo"] .status-count { background: #dbeafe; color: #1e40af; }
+.status-bar[data-status="progress"] .status-count { background: #fef3c7; color: #92400e; }
+.status-bar[data-status="completed"] .status-count { background: #d1fae5; color: #065f46; }
+
+.status-items {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  overflow-y: auto;
+  padding-right: 3px;
+  flex: 1;
+  min-height: 60px;
+}
+
+.status-items::-webkit-scrollbar {
+  width: 5px;
+}
+.status-items::-webkit-scrollbar-thumb {
+  background: #e2e8f0;
+  border-radius: 10px;
+}
+
+.status-items .task-card {
+  padding: 8px 10px;
+  font-size: 0.82rem;
+  border-left-width: 4px;
+  border-radius: 10px;
+  cursor: grab;
+  margin: 0;
+}
+
+.status-bar[data-status="todo"] .task-card { border-left-color: #3b82f6; }
+.status-bar[data-status="progress"] .task-card { border-left-color: #f59e0b; background: #fffbeb; }
+.status-bar[data-status="completed"] .task-card {
+  border-left-color: #10b981;
+  background: #f0fdf4;
+  opacity: 0.9;
+}
+
+.status-bar[data-status="completed"] .task-card span:first-child {
+  text-decoration: line-through;
+  color: #64748b;
+}
+
+.status-empty {
+  color: #cbd5e1;
+  font-style: italic;
+  font-size: 0.78rem;
+  text-align: center;
+  padding: 12px 0;
+}
+
+/* ========== LAYOUT ========== */
+.dashboard {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+@media (min-width: 1024px) {
+  .dashboard {
+    flex-direction: row;
+    align-items: flex-start;
+  }
+  .checklist-panel {
+    flex: 0 0 280px;
+  }
+  .calendar-panel {
+    flex: 1;
+    min-width: 0;
+  }
+}
+
+/* ========== CHECKLIST PANEL ========== */
+.checklist-panel {
+  background: white;
+  border-radius: 24px;
+  padding: 20px 16px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.04), 0 0 0 1px rgba(0, 0, 0, 0.02);
+  display: flex;
+  flex-direction: column;
+  max-height: 80vh;
+}
+
+.checklist-panel h2 {
+  padding-left: 6px;
+}
+
+.checklist-items {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  overflow-y: auto;
+  padding: 4px 2px 8px;
+  min-height: 180px;
+}
+
+/* ========== TASK CARDS ========== */
+.task-card {
+  background: #ffffff;
+  border-left: 5px solid #3b82f6;
+  border-radius: 14px;
+  padding: 14px 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02), 0 1px 2px rgba(0, 0, 0, 0.05);
+  cursor: grab;
+  transition: all 0.15s;
+  user-select: none;
+  font-weight: 500;
+  font-size: 0.95rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border: 1px solid #e9eef3;
+  touch-action: none;
+  word-break: break-word;
+}
+
+.task-card:active {
+  cursor: grabbing;
+}
+
+.task-card.dragging {
+  opacity: 0.4;
+  transform: scale(0.98);
+  cursor: grabbing;
+}
+
+.task-card.drag-over {
+  border-left-color: #f59e0b;
+  background: #fffbeb;
+}
+
+.task-badge {
+  background: #dbeafe;
+  color: #1e40af;
+  font-size: 0.7rem;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 40px;
+  margin-left: 10px;
+  white-space: nowrap;
+}
+
+/* ========== CALENDAR PANEL ========== */
+.calendar-panel {
+  background: white;
+  border-radius: 24px;
+  padding: 20px 16px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.04), 0 0 0 1px rgba(0, 0, 0, 0.02);
+  overflow-x: auto;
+  overflow-y: auto;
+  max-height: 85vh;
+}
+
+.calendar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 18px;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.calendar-header h2 {
+  margin-bottom: 0;
+}
+
+.calendar-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 560px;
+}
+
+.calendar-row {
+  display: flex;
+  gap: 8px;
+  align-items: stretch;
+}
+
+.time-label {
+  width: 70px;
+  flex-shrink: 0;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: #64748b;
+  padding-top: 10px;
+  text-align: right;
+  padding-right: 10px;
+}
+
+.time-slot {
+  flex: 1;
+  background: #f8fafc;
+  border-radius: 12px;
+  padding: 10px 12px;
+  min-height: 64px;
+  border: 1px dashed #cbd5e1;
+  transition: background 0.1s, border-color 0.1s;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: flex-start;
+  align-content: flex-start;
+  position: relative;
+}
+
+.time-slot.drag-over {
+  background: #eff6ff;
+  border-color: #3b82f6;
+  border-style: solid;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.15);
+}
+
+.time-slot .task-card {
+  background: #eef2ff;
+  border-left-color: #6366f1;
+  padding: 8px 12px;
+  font-size: 0.85rem;
+  box-shadow: none;
+  border: 1px solid #c7d2fe;
+  margin: 0;
+  flex: 0 0 auto;
+  max-width: 100%;
+  cursor: grab;
+}
+
+.time-slot .task-card.dragging {
+  opacity: 0.3;
+}
+
+/* ========== MOBILE FINE-TUNING ========== */
+@media (max-width: 600px) {
+  body {
+    padding: 10px;
+  }
+  h1 {
+    font-size: 1.4rem;
+  }
+  .checklist-panel,
+  .calendar-panel {
+    padding: 16px 12px;
+    border-radius: 20px;
+  }
+  .time-label {
+    width: 56px;
+    font-size: 0.7rem;
+    padding-right: 6px;
+  }
+  .time-slot {
+    padding: 8px 8px;
+    min-height: 56px;
+  }
+  .calendar-grid {
+    min-width: 480px;
+  }
+  .task-card {
+    padding: 12px 14px;
+    font-size: 0.9rem;
+  }
+  .status-bar {
+    min-height: 130px;
+    max-height: 200px;
+  }
+  .status-title {
+    font-size: 0.88rem;
+  }
+}
+
+/* ========== UTILITY ========== */
+.empty-message {
+  color: #94a3b8;
+  font-style: italic;
+  font-size: 0.9rem;
+  padding: 12px 8px;
+  text-align: center;
+  width: 100%;
+}
+
+/* ========== SCROLLBAR AESTHETICS ========== */
+.checklist-items::-webkit-scrollbar,
+.calendar-panel::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+.checklist-items::-webkit-scrollbar-thumb,
+.calendar-panel::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 10px;
+}
